@@ -2,8 +2,30 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import MainContent from "./assets/components/MainContent";
 import SideNav from "./assets/components/SideNav";
 import Header from "./assets/components/Header";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function App() {
+
+  const url = "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+
+  useEffect(() => {
+
+    const controller = new AbortController();
+    const {signal} = controller;
+
+    setLoading(true);
+    axios.get(url, {signal})
+      .then(({data}) => setData(data.meals))
+      .finally( () => setLoading(false))
+
+    return () => controller.abort();
+  }, [])  
+
+
   return (
     <Grid
       templateAreas={`"header header"
