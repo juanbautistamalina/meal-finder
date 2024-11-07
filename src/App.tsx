@@ -2,9 +2,9 @@ import { Grid, GridItem } from "@chakra-ui/react";
 import MainContent from "./assets/components/MainContent";
 import SideNav from "./assets/components/SideNav";
 import Header from "./assets/components/Header";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { CategoriesResponse, Category } from "./types";
+import { useState } from "react";
+import { Category } from "./types";
+import useHttpData from "./hooks/useHttpData";
 
 function App() {
   const url = "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
@@ -12,34 +12,8 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState<Category>({
     strCategory: "Beef",
   });
-  const [data, setData] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    let ignore = false;
-    const controller = new AbortController();
-    const { signal } = controller;
-    setLoading(true);
-
-    axios
-      .get<CategoriesResponse>(url, { signal })
-      .then(({ data }) => {
-        if(!ignore){
-          setData(data.meals)
-        }
-      })
-
-      .finally(() =>{
-        if(!ignore){
-          setLoading(false)};
-        })
-
-    return () => {
-      ignore = true;
-      controller.abort()
-    };
-  }, []);
-  
+  const { loading, data } = useHttpData<Category>(url);
 
   return (
     <Grid
@@ -53,11 +27,12 @@ function App() {
         <Header />
       </GridItem>
       <GridItem p="5" area={"nav"} height="calc(100vh - 60px)">
-        <SideNav 
-        categories={data}
-        loading={loading}
-        selectedCategory={selectedCategory}
-        setSelectedCategory={setSelectedCategory} />
+        <SideNav
+          categories={data}
+          loading={loading}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+        />
       </GridItem>
       <GridItem pl="2" bg="green.300" area={"main"}>
         <MainContent />
