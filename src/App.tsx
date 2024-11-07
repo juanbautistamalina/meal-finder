@@ -16,17 +16,30 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let ignore = false;
     const controller = new AbortController();
     const { signal } = controller;
     setLoading(true);
 
     axios
       .get<CategoriesResponse>(url, { signal })
-      .then(({ data }) => setData(data.meals))
-      .finally(() => setLoading(false));
+      .then(({ data }) => {
+        if(!ignore){
+          setData(data.meals)
+        }
+      })
 
-    return () => controller.abort();
+      .finally(() =>{
+        if(!ignore){
+          setLoading(false)};
+        })
+
+    return () => {
+      ignore = true;
+      controller.abort()
+    };
   }, []);
+  
 
   return (
     <Grid

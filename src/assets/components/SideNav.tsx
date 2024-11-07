@@ -1,4 +1,4 @@
-import { Heading, Link, VStack } from "@chakra-ui/react";
+import { Heading, Link, SkeletonText, VStack } from "@chakra-ui/react";
 import { Category } from "../../types";
 
 type Props = {
@@ -14,10 +14,8 @@ const selectedProps = {
   fontWeight: "bold"
 }
 
-function SideNav({ categories, selectedCategory, setSelectedCategory }: Props) {
-  
-
-  return (
+function SideNav({ loading, categories, selectedCategory, setSelectedCategory }: Props) {
+  return loading ? <SkeletonText mt={1} noOfLines={8} spacing="6" /> :(
     <>
       <Heading color="blue.400" fontSize={12} fontWeight="bold" mb={4}>
         CATEGORIAS
