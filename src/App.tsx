@@ -32,6 +32,7 @@ function App() {
                   "nav main"`}
       gridTemplateRows={"60px 1fr"}
       gridTemplateColumns={{ sm: `0 1fr`, md: `250px 1fr` }}
+      fontSize={14}
     >
       <GridItem pl="2" bg="orange.300" area={"header"}>
         <Header />

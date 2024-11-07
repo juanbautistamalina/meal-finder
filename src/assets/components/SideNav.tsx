@@ -22,7 +22,7 @@ function SideNav({ categories }: Props) {
   return (
     <>
       <Heading color="blue.400" fontSize={12} fontWeight="bold" mb={4}>
-        Categorías
+        CATEGORIAS
       </Heading>
       <VStack align="stretch">
         {categories.map((c) => (
