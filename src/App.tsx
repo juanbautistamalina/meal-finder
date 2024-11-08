@@ -3,8 +3,9 @@ import MainContent from "./assets/components/MainContent";
 import SideNav from "./assets/components/SideNav";
 import Header from "./assets/components/Header";
 import { useState } from "react";
-import { Category, Meal } from "./types";
+import { Category, Meal, SearchForm } from "./types";
 import useHttpData from "./hooks/useHttpData";
+import axios from "axios";
 
 const url = "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
 const makeMealUrl = (category: Category) =>
@@ -19,11 +20,22 @@ function App() {
     useState<Category>(defaultCategory);
 
   const { loading, data } = useHttpData<Category>(url);
-  const { loading: loadingMeal, data: dataMeal } = useHttpData<Meal>(
-    makeMealUrl(defaultCategory)
-  );
+  const {
+    loading: loadingMeal,
+    data: dataMeal,
+    setData: setMeals,
+    setLoading: setLoadingMeal,
+  } = useHttpData<Meal>(makeMealUrl(defaultCategory));
 
-  console.log({ dataMeal });
+  const searchApi = (searchForm: SearchForm) => {
+    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchForm.search}`
+    setLoadingMeal(true);
+    axios
+      .get<{meals: Meal[]}>(url)
+      .then(({data}) => setMeals(data.meals))
+      .finally(() => setLoadingMeal(false))
+
+  };
 
   return (
     <Grid
@@ -34,7 +46,7 @@ function App() {
       fontSize={14}
     >
       <GridItem
-      boxShadow="lg"
+        boxShadow="lg"
         zIndex="1"
         pos="sticky"
         top="0"
@@ -42,7 +54,7 @@ function App() {
         bg="white"
         area={"header"}
       >
-        <Header />
+        <Header onSubmit={searchApi} />
       </GridItem>
       <GridItem
         pos="sticky"
