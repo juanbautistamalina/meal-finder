@@ -19,7 +19,7 @@ const joinIngredients = (data: MealDetails) => {
   for (let index = 1; index <= 20; index++) {
     const ingredient = data[`strIngredient${index}`];
     const measure = data[`strMeasure${index}`];
-    if (ingredient !== "") {
+    if (ingredient !== "" || ingredient !== null) {
       ingredients.push(`${ingredient} - ${measure}`);
     }
   }
