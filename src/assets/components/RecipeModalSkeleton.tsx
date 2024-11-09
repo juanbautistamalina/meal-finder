@@ -18,7 +18,7 @@ function RecipeModalSkeleton({}: Props) {
         noOfLines={1}
         skeletonHeight={280}
       />
-      <SkeletonText mt="4" noOfLines={5} spacing="4"/>
+      <SkeletonText mt="4" noOfLines={5} spacing="4" />
     </Container>
   );
 }
