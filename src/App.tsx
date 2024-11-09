@@ -7,6 +7,7 @@ import { Category, Meal, SearchForm } from "./types";
 import useHttpData from "./hooks/useHttpData";
 import axios from "axios";
 import RecipeModal from "./assets/components/RecipeModal";
+import useFetch from "./hooks/useFetch";
 
 const url = "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
 const makeMealUrl = (category: Category) =>
@@ -18,10 +19,14 @@ const defaultCategory = {
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
   const [selectedCategory, setSelectedCategory] =
     useState<Category>(defaultCategory);
 
   const { loading, data } = useHttpData<Category>(url);
+
+  
+
   const {
     loading: loadingMeal,
     data: dataMeal,
@@ -37,6 +42,9 @@ function App() {
       .then(({ data }) => setMeals(data.meals))
       .finally(() => setLoadingMeal(false));
   };
+
+  const {fetch} = useFetch()
+  fetch() 
 
   return (
     <>
