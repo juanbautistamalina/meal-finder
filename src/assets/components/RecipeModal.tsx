@@ -9,22 +9,24 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import RecipeModalSkeleton from "./RecipeModalSkeleton";
+import RecipeModalContent from "./RecipeModalContent";
+import { MealDetails } from "../../types";
 
 type Props = {
+  data: MealDetails | undefined
   isOpen: boolean;
   onClose: () => void;
   loading: boolean;
 };
 
-function RecipeModal({ isOpen, onClose, loading }: Props) {
+function RecipeModal({ isOpen, onClose, loading, data }: Props) {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
 
-          <RecipeModalSkeleton />
-          {/* {loading ? <RecipeModalSkeleton /> : "contenido"} */}
+          {loading ? <RecipeModalSkeleton /> : data && <RecipeModalContent data={data}/> }
 
           <ModalFooter>
             <Button colorScheme="blue" mr={3} onClick={onClose}>
