@@ -3,7 +3,7 @@ import MainContent from "./assets/components/MainContent";
 import SideNav from "./assets/components/SideNav";
 import Header from "./assets/components/Header";
 import { useState } from "react";
-import { Category, Meal, SearchForm } from "./types";
+import { Category, Meal, MealDetails, SearchForm } from "./types";
 import useHttpData from "./hooks/useHttpData";
 import axios from "axios";
 import RecipeModal from "./assets/components/RecipeModal";
@@ -43,10 +43,10 @@ function App() {
       .finally(() => setLoadingMeal(false));
   };
 
-  const { fetch } = useFetch<Meal>();
+  const { fetch, loading: loadingMealDetails } = useFetch<MealDetails>();
 
   const searchMealDetails = (meal: Meal) => {
-    onOpen()
+    onOpen();
     fetch(`${baseUrl}lookup.php?i=${meal.idMeal}`);
   };
 
@@ -94,7 +94,11 @@ function App() {
           />
         </GridItem>
       </Grid>
-      <RecipeModal isOpen={isOpen} onClose={onClose} />
+      <RecipeModal
+        loading={loadingMealDetails}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
     </>
   );
 }
