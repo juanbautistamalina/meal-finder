@@ -9,9 +9,11 @@ import axios from "axios";
 import RecipeModal from "./assets/components/RecipeModal";
 import useFetch from "./hooks/useFetch";
 
-const url = "https://www.themealdb.com/api/json/v1/1/list.php?c=list";
+const baseUrl = "https://www.themealdb.com/api/json/v1/1/";
+const url = `${baseUrl}list.php?c=list`;
+
 const makeMealUrl = (category: Category) =>
-  `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category.strCategory}`;
+  `${baseUrl}filter.php?c=${category.strCategory}`;
 
 const defaultCategory = {
   strCategory: "Beef",
@@ -19,13 +21,11 @@ const defaultCategory = {
 
 function App() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   const [selectedCategory, setSelectedCategory] =
     useState<Category>(defaultCategory);
 
   const { loading, data } = useHttpData<Category>(url);
-
-  
 
   const {
     loading: loadingMeal,
@@ -35,7 +35,7 @@ function App() {
   } = useHttpData<Meal>(makeMealUrl(defaultCategory));
 
   const searchApi = (searchForm: SearchForm) => {
-    const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchForm.search}`;
+    const url = `${baseUrl}search.php?s=${searchForm.search}`;
     setLoadingMeal(true);
     axios
       .get<{ meals: Meal[] }>(url)
@@ -43,8 +43,12 @@ function App() {
       .finally(() => setLoadingMeal(false));
   };
 
-  const {fetch} = useFetch()
-  fetch() 
+  const { fetch } = useFetch<Meal>();
+
+  const searchMealDetails = (meal: Meal) => {
+    onOpen()
+    fetch(`${baseUrl}lookup.php?i=${meal.idMeal}`);
+  };
 
   return (
     <>
@@ -83,7 +87,11 @@ function App() {
           />
         </GridItem>
         <GridItem p="4" bg="gray.100" area={"main"}>
-          <MainContent openRecipe={onOpen} loading={loadingMeal} meals={dataMeal} />
+          <MainContent
+            openRecipe={searchMealDetails}
+            loading={loadingMeal}
+            meals={dataMeal}
+          />
         </GridItem>
       </Grid>
       <RecipeModal isOpen={isOpen} onClose={onClose} />
