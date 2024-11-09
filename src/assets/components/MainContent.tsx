@@ -12,7 +12,6 @@ import { Meal } from "../../types";
 import MealCard from "./MealCard";
 import SkeletonCard from "./SkeletonCard";
 
-
 type Props = {
   meals: Meal[];
   loading: boolean;
@@ -26,8 +25,10 @@ function MainContent({ loading, meals, openRecipe }: Props) {
     <SimpleGrid columns={[2, null, 3]} spacing="20px">
       {loading && skeletons.map((skeleton) => <SkeletonCard key={skeleton} />)}
 
-      {!loading && meals.map((m) => 
-      <MealCard openRecipe={() => openRecipe(m)} key={m.idMeal} meal={m} />)}
+      {!loading &&
+        meals.map((m) => (
+          <MealCard openRecipe={() => openRecipe(m)} key={m.idMeal} meal={m} />
+        ))}
     </SimpleGrid>
   );
 }

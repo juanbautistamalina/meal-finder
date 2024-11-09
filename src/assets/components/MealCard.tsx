@@ -1,4 +1,12 @@
-import { Card, CardBody, Heading, CardFooter, Button, Image, Text } from "@chakra-ui/react";
+import {
+  Card,
+  CardBody,
+  Heading,
+  CardFooter,
+  Button,
+  Image,
+  Text,
+} from "@chakra-ui/react";
 import { Meal } from "../../types";
 
 type Props = {
@@ -6,7 +14,7 @@ type Props = {
   openRecipe: () => void;
 };
 
-function MealCard({meal, openRecipe}: Props) {
+function MealCard({ meal, openRecipe }: Props) {
   return (
     <Card boxShadow="lg">
       <CardBody>
